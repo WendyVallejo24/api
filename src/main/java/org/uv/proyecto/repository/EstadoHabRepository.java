@@ -5,12 +5,14 @@
 package org.uv.proyecto.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.uv.proyecto.models.EstadoHabitacion;
 
 /**
  *
  * @author wbpat
  */
-public interface EstadoHabRepository extends JpaRepository<EstadoHabitacion, Integer> {
+@Repository
+public interface EstadoHabRepository extends JpaRepository<EstadoHabitacion, Integer>{
     
 }

@@ -4,14 +4,15 @@
  */
 package org.uv.proyecto.repository;
 
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.uv.proyecto.models.Habitaciones;
 
 /**
  *
  * @author wbpat
  */
+@Repository
 public interface HabitacionesRepository extends JpaRepository<Habitaciones, Integer> {
-    List<Habitaciones> findById(int n_habitacion);
+    
 }

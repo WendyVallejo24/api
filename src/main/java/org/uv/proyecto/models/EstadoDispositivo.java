@@ -2,13 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package org.uv.proyecto.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -20,27 +25,37 @@ import javax.persistence.Table;
 public class EstadoDispositivo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_estado")
-    private int id_estado;
+    @Column(name = "id_estado_dis")
+    private int idEstado;
     
     @Column(name = "estado_dis")
-    private boolean estado_dis;
-
-    public int getId_estado() {
-        return id_estado;
-    }
-
-    public void setId_estado(int id_estado) {
-        this.id_estado = id_estado;
-    }
-
-    public boolean isEstado_dis() {
-        return estado_dis;
-    }
-
-    public void setEstado_dis(boolean estado_dis) {
-        this.estado_dis = estado_dis;
-    }
+    private boolean estadoDis;
     
+    @OneToOne(mappedBy="estadoDis")
+    private Dispositivos dispositivo;
+
+    public int getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(int idEstado) {
+        this.idEstado = idEstado;
+    }
+
+    public boolean isEstadoDis() {
+        return estadoDis;
+    }
+
+    public void setEstadoDis(boolean estadoDis) {
+        this.estadoDis = estadoDis;
+    }
+
+    public Dispositivos getDispositivo() {
+        return dispositivo;
+    }
+
+    public void setDispositivo(Dispositivos dispositivo) {
+        this.dispositivo = dispositivo;
+    }
     
 }

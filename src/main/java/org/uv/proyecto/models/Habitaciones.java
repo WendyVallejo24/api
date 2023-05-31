@@ -15,33 +15,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-/**
- *
- * @author wbpat
- */
+
 @Entity
 @Table(name = "habitaciones")
 public class Habitaciones {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "n_habitacion")
-    private int n_habitacion;
+    private int nHabitacion;
+
+    public int getnHabitacion() {
+        return nHabitacion;
+    }
+
+    public void setnHabitacion(int nHabitacion) {
+        this.nHabitacion = nHabitacion;
+    }
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_estado_dis", nullable = false)
+    @JoinColumn(name = "ip_dispositivo", nullable = false)
     private Dispositivos dispositivo;
     
-    @OneToOne
-    @JoinColumn(name = "id_estado_hab")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_estado_hab", nullable = false)
     private EstadoHabitacion estadoHab;
 
-    public int getN_habitacion() {
-        return n_habitacion;
-    }
 
-    public void setN_habitacion(int n_habitacion) {
-        this.n_habitacion = n_habitacion;
-    }
 
     public Dispositivos getDispositivo() {
         return dispositivo;

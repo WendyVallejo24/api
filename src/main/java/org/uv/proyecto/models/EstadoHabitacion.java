@@ -21,30 +21,37 @@ import javax.persistence.Table;
 public class EstadoHabitacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_estado")
-    private int id_estado;
+    @Column(name = "id_estado_hab")
+    private int idEstado;
     
     @Column(name = "estado_hab")
-    private String estado_hab;
+    private String estadoHab;
 
-    @OneToOne(mappedBy = "estado_hab")
+    @OneToOne(mappedBy = "estadoHab")
     private Habitaciones habitacion;
     
-    public int getId_estado() {
-        return id_estado;
+    public Habitaciones getHabitacion() {
+        return habitacion;
     }
 
-    public void setId_estado(int id_estado) {
-        this.id_estado = id_estado;
+    public void setHabitacion(Habitaciones habitacion) {
+        this.habitacion = habitacion;
     }
 
-    public String getEstado_hab() {
-        return estado_hab;
+    public int getIdEstado() {
+        return idEstado;
     }
 
-    public void setEstado_hab(String estado_hab) {
-        this.estado_hab = estado_hab;
+    public void setIdEstado(int idEstado) {
+        this.idEstado = idEstado;
     }
-    
+
+    public String getEstadoHab() {
+        return estadoHab;
+    }
+
+    public void setEstadoHab(String estadoHab) {
+        this.estadoHab = estadoHab;
+    }  
     
 }

@@ -4,19 +4,15 @@
  */
 package org.uv.proyecto.repository;
 
-import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.uv.proyecto.models.Dispositivos;
 
 /**
  *
  * @author wbpat
  */
+@Repository
 public interface DispositivosRepository extends JpaRepository<Dispositivos, String> {
     
-    List<Dispositivos> findByHabitacionId(String ip_dispositivo);
-    
-    @Transactional
-    void deleteByHabitacionId(String n_habitacion);
 }

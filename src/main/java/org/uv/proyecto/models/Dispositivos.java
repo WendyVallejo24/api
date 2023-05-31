@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.uv.proyecto.models;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,22 +12,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-/**
- *
- * @author wbpat
- */
+
 @Entity
 @Table(name = "dispositivos")
 public class Dispositivos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ip_dispositivo")
-    private String ip_dispositivo;
+    private String ipDispositivo;
     
     @Column(name = "tipo_dis")
-    private String tipo_dis;
+    private String tipoDis;
     
     @Column(name = "hora")
     private Time hora;
@@ -37,60 +34,56 @@ public class Dispositivos {
     @Column(name = "fecha")
     private Date fecha;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_estado_dis")
-    private Dispositivos dispositivo;
+    private EstadoDispositivo estadoDis;
     
     @Column(name = "ultimavezactivo")
     private Time  ultimavezactivo;
+    
+    @OneToMany(mappedBy = "dispositivo")
+    private List<Habitaciones> habitacion = new ArrayList<>();
 
-    public String getIp_dispositivo() {
-        return ip_dispositivo;
+    public String getIpDispositivo() {
+        return ipDispositivo;
     }
-
-    public void setIp_dispositivo(String ip_dispositivo) {
-        this.ip_dispositivo = ip_dispositivo;
+    public void setIpDispositivo(String ipDispositivo) {
+        this.ipDispositivo = ipDispositivo;
     }
-
-    public String getTipo_dis() {
-        return tipo_dis;
+    public String getTipoDis() {
+        return tipoDis;
     }
-
-    public void setTipo_dis(String tipo_dis) {
-        this.tipo_dis = tipo_dis;
+    public void setTipoDis(String tipoDis) {
+        this.tipoDis = tipoDis;
     }
-
     public Time getHora() {
         return hora;
     }
-
     public void setHora(Time hora) {
         this.hora = hora;
     }
-
     public Date getFecha() {
         return fecha;
     }
-
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-
+    public EstadoDispositivo getEstadoDis() {
+        return estadoDis;
+    }
+    public void setEstadoDis(EstadoDispositivo estadoDis) {
+        this.estadoDis = estadoDis;
+    }
     public Time getUltimavezactivo() {
         return ultimavezactivo;
     }
-
     public void setUltimavezactivo(Time ultimavezactivo) {
         this.ultimavezactivo = ultimavezactivo;
     }
-
-    public Dispositivos getDispositivo() {
-        return dispositivo;
+    public List<Habitaciones> getHabitacion() {
+        return habitacion;
     }
-
-    public void setDispositivo(Dispositivos dispositivo) {
-        this.dispositivo = dispositivo;
+    public void setHabitacion(List<Habitaciones> habitacion) {
+        this.habitacion = habitacion;
     }
-   
-    
 }
