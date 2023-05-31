@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/*package org.uv.proyecto.services;
+package org.uv.proyecto.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,49 +11,46 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.uv.proyecto.models.Habitaciones;
 import org.uv.proyecto.repository.HabitacionesRepository;
-*/
+
 /**
  *
  * @author wbpat
  */
-/*@Service
+@Service
 public class HabitacionesService {
+    private final HabitacionesRepository habitacionesRepository;
+
     @Autowired
-    private HabitacionesRepository habitacionesRepository;
-
-    public List<Habitaciones> getAllHabitaciones() {
-        return habitacionesRepository.findAll();
-    }
-
-    public Optional<Habitaciones> getHabitacionById(int id) {
-        return habitacionesRepository.findById(id);
+    public HabitacionesService(HabitacionesRepository habitacionesRepository) {
+        this.habitacionesRepository = habitacionesRepository;
     }
 
     public Habitaciones createHabitacion(Habitaciones habitacion) {
         return habitacionesRepository.save(habitacion);
     }
 
-    public Habitaciones updateHabitacion(int id, Habitaciones habitacion) {
-        Optional<Habitaciones> optionalHabitacion = habitacionesRepository.findById(id);
-        if (optionalHabitacion.isPresent()) {
-            Habitaciones existingHabitacion = optionalHabitacion.get();
-            existingHabitacion.setDispositivo(habitacion.getDispositivo());
-            existingHabitacion.setEstadoHab(habitacion.getEstadoHab());
-            // Actualizar otros campos según sea necesario
-            
-            return habitacionesRepository.save(existingHabitacion);
-        } else {
-            throw new NotFoundException("Habitacion no encontrada");
-        }
+    public Habitaciones getHabitacion(int nHabitacion) {
+        Optional<Habitaciones> optionalHabitacion = habitacionesRepository.findById(nHabitacion);
+        return optionalHabitacion.orElse(null);
     }
 
-    public void deleteHabitacion(int id) {
-        Optional<Habitaciones> optionalHabitacion = habitacionesRepository.findById(id);
-        if (optionalHabitacion.isPresent()) {
-            habitacionesRepository.delete(optionalHabitacion.get());
-        } else {
-            throw new NotFoundException("Habitacion no encontrada");
+    public List<Habitaciones> getAllHabitaciones() {
+        return habitacionesRepository.findAll();
+    }
+
+    public Habitaciones updateHabitacion(int nHabitacion, Habitaciones habitacionDetails) {
+        Habitaciones habitacion = habitacionesRepository.findById(nHabitacion).orElse(null);
+        if (habitacion != null) {
+            habitacion.setDispositivo(habitacionDetails.getDispositivo());
+            habitacion.setEstadoHab(habitacionDetails.getEstadoHab());
+            // Actualiza los demás campos según sea necesario
+
+            return habitacionesRepository.save(habitacion);
         }
+        return null;
+    }
+
+    public void deleteHabitacion(int nHabitacion) {
+        habitacionesRepository.deleteById(nHabitacion);
     }
 }
-*/

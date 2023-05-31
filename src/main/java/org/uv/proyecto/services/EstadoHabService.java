@@ -2,57 +2,52 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/*
 package org.uv.proyecto.services;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.stereotype.Service;
 import org.uv.proyecto.models.EstadoHabitacion;
 import org.uv.proyecto.repository.EstadoHabRepository;
-*/
 /**
  *
  * @author wbpat
  */
-/*
+@Service
 public class EstadoHabService {
+    private final EstadoHabRepository estadoHabitacionRepository;
+
     @Autowired
-    private EstadoHabRepository estadoHabitacionRepository;
-
-    public List<EstadoHabitacion> getAllEstadosHabitacion() {
-        return estadoHabitacionRepository.findAll();
-    }
-
-    public Optional<EstadoHabitacion> getEstadoHabitacionById(int id) {
-        return estadoHabitacionRepository.findById(id);
+    public EstadoHabService(EstadoHabRepository estadoHabitacionRepository) {
+        this.estadoHabitacionRepository = estadoHabitacionRepository;
     }
 
     public EstadoHabitacion createEstadoHabitacion(EstadoHabitacion estadoHabitacion) {
         return estadoHabitacionRepository.save(estadoHabitacion);
     }
 
-    public EstadoHabitacion updateEstadoHabitacion(int id, EstadoHabitacion estadoHabitacion) {
-        Optional<EstadoHabitacion> optionalEstadoHabitacion = estadoHabitacionRepository.findById(id);
-        if (optionalEstadoHabitacion.isPresent()) {
-            EstadoHabitacion existingEstadoHabitacion = optionalEstadoHabitacion.get();
-            existingEstadoHabitacion.setEstadoHab(estadoHabitacion.getEstadoHab());
-            // Actualizar otros campos según sea necesario
-            
-            return estadoHabitacionRepository.save(existingEstadoHabitacion);
-        } else {
-            throw new NotFoundException("EstadoHabitacion no encontrada");
-        }
+    public EstadoHabitacion getEstadoHabitacion(int idEstado) {
+        Optional<EstadoHabitacion> optionalEstadoHabitacion = estadoHabitacionRepository.findById(idEstado);
+        return optionalEstadoHabitacion.orElse(null);
     }
 
-    public void deleteEstadoHabitacion(int id) {
-        Optional<EstadoHabitacion> optionalEstadoHabitacion = estadoHabitacionRepository.findById(id);
-        if (optionalEstadoHabitacion.isPresent()) { 
-            estadoHabitacionRepository.delete(optionalEstadoHabitacion.get());
-        } else {
-            throw new NotFoundException("EstadoHabitacion no encontrada");
+    public List<EstadoHabitacion> getAllEstadoHabitacion() {
+        return estadoHabitacionRepository.findAll();
+    }
+
+    public EstadoHabitacion updateEstadoHabitacion(int idEstado, EstadoHabitacion estadoHabitacionDetails) {
+        EstadoHabitacion estadoHabitacion = estadoHabitacionRepository.findById(idEstado).orElse(null);
+        if (estadoHabitacion != null) {
+            estadoHabitacion.setEstadoHab(estadoHabitacionDetails.getEstadoHab());
+            // Actualiza los demás campos según sea necesario
+
+            return estadoHabitacionRepository.save(estadoHabitacion);
         }
+        return null;
+    }
+
+    public void deleteEstadoHabitacion(int idEstado) {
+        estadoHabitacionRepository.deleteById(idEstado);
     }
 }
-*/
