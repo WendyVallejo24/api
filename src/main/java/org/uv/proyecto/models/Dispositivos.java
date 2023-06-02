@@ -31,15 +31,11 @@ public class Dispositivos {
     @Column(name = "hora")
     private Time hora;
     
-    @Column(name = "fecha")
-    private Date fecha;
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_estado_dis")
     private EstadoDispositivo estadoDis;
     
-    @Column(name = "ultimavezactivo")
-    private Time  ultimavezactivo;
     
     @OneToMany(mappedBy = "dispositivo")
     private List<Habitaciones> habitacion = new ArrayList<>();
@@ -62,24 +58,13 @@ public class Dispositivos {
     public void setHora(Time hora) {
         this.hora = hora;
     }
-    public Date getFecha() {
-        return fecha;
-    }
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
     public EstadoDispositivo getEstadoDis() {
         return estadoDis;
     }
     public void setEstadoDis(EstadoDispositivo estadoDis) {
         this.estadoDis = estadoDis;
     }
-    public Time getUltimavezactivo() {
-        return ultimavezactivo;
-    }
-    public void setUltimavezactivo(Time ultimavezactivo) {
-        this.ultimavezactivo = ultimavezactivo;
-    }
+
     public List<Habitaciones> getHabitacion() {
         return habitacion;
     }

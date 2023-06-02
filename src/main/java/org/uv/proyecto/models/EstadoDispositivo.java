@@ -29,7 +29,11 @@ public class EstadoDispositivo {
     private int idEstado;
     
     @Column(name = "estado_dis")
-    private boolean estadoDis;
+    private int estadoDis;
+
+    public int getEstadoDis() {
+        return estadoDis;
+    }
     
     @OneToOne(mappedBy="estadoDis")
     private Dispositivos dispositivo;
@@ -42,11 +46,11 @@ public class EstadoDispositivo {
         this.idEstado = idEstado;
     }
 
-    public boolean isEstadoDis() {
+    public int isEstadoDis() {
         return estadoDis;
     }
 
-    public void setEstadoDis(boolean estadoDis) {
+    public void setEstadoDis(int estadoDis) {
         this.estadoDis = estadoDis;
     }
 

@@ -13,50 +13,45 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.uv.proyecto.models.EstadoDispositivo;
-import org.uv.proyecto.services.EstadoDisService;
+import org.uv.proyecto.repository.DispositivosRepository;
+import org.uv.proyecto.repository.EstadoDisRepository;
 
 /**
  *
  * @author wbpat
  */
+@RestController
+@RequestMapping("/api")
 public class EstadoDisController {
-    private final EstadoDisService estadoDispositivoService;
-
     @Autowired
-    public EstadoDisController(EstadoDisService estadoDispositivoService) {
-        this.estadoDispositivoService = estadoDispositivoService;
-    }
+    private EstadoDisRepository estadoDispositivosRepository;
+    
+    @Autowired
+    DispositivosRepository dispositivosRepository;
 
-    @PostMapping
+    @PostMapping("/estadodisp")
     public ResponseEntity<EstadoDispositivo> createEstadoDispositivo(@RequestBody EstadoDispositivo estadoDispositivo) {
-        EstadoDispositivo createdEstadoDispositivo = estadoDispositivoService.createEstadoDispositivo(estadoDispositivo);
+        EstadoDispositivo createdEstadoDispositivo = estadoDispositivosRepository.save(estadoDispositivo);
+        System.out.println("info del estado " + createdEstadoDispositivo.getEstadoDis());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEstadoDispositivo);
     }
 
-    @GetMapping("/{idEstado}")
+    @GetMapping("/estadodisp/{idEstado}")
     public ResponseEntity<EstadoDispositivo> getEstadoDispositivo(@PathVariable int idEstado) {
-        EstadoDispositivo estadoDispositivo = estadoDispositivoService.getEstadoDispositivoById(idEstado);
-        if (estadoDispositivo != null) {
-            return ResponseEntity.ok(estadoDispositivo);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        EstadoDispositivo estadoDispositivo = estadoDispositivosRepository.findById(idEstado)
+                .orElseThrow();
+        
+        return new ResponseEntity<>(estadoDispositivo, HttpStatus.OK);
     }
 
-    @PutMapping("/{idEstado}")
+    @PutMapping("/estadodisp/{idEstado}")
     public ResponseEntity<EstadoDispositivo> updateEstadoDispositivo(@PathVariable int idEstado, @RequestBody EstadoDispositivo estadoDispositivoDetails) {
-        EstadoDispositivo updatedEstadoDispositivo = estadoDispositivoService.updateEstadoDispositivo(idEstado, estadoDispositivoDetails);
-        if (updatedEstadoDispositivo != null) {
-            return ResponseEntity.ok(updatedEstadoDispositivo);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        EstadoDispositivo estadoDispositivo = estadoDispositivosRepository.findById(idEstado)
+                .orElseThrow();
+        return new ResponseEntity<>(estadoDispositivosRepository.save(estadoDispositivo), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{idEstado}")
-    public ResponseEntity<Void> deleteEstadoDispositivo(@PathVariable int idEstado) {
-        estadoDispositivoService.deleteEstadoDispositivo(idEstado);
-        return ResponseEntity.noContent().build();
-    }
 }
