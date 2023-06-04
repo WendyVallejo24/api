@@ -24,34 +24,25 @@ import org.uv.proyecto.repository.EstadoDisRepository;
  * @author wbpat
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/estadoDispositivo")
 public class EstadoDisController {
     @Autowired
     private EstadoDisRepository estadoDispositivosRepository;
     
-    @Autowired
-    DispositivosRepository dispositivosRepository;
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getEstadoDispositivo(@PathVariable Integer id) {
+        EstadoDispositivo estadoDispositivo = estadoDispositivosRepository.findById(id).orElse(null);
+        if (estadoDispositivo != null) {
+            return ResponseEntity.ok(estadoDispositivo);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Estado de dispositivo no encontrado");
+        }
+    }
 
-    @PostMapping("/estadodisp")
-    public ResponseEntity<EstadoDispositivo> createEstadoDispositivo(@RequestBody EstadoDispositivo estadoDispositivo) {
+    @PostMapping
+    public ResponseEntity<?> createEstadoDispositivo(@RequestBody EstadoDispositivo estadoDispositivo) {
         EstadoDispositivo createdEstadoDispositivo = estadoDispositivosRepository.save(estadoDispositivo);
-        System.out.println("info del estado " + createdEstadoDispositivo.getEstadoDis());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEstadoDispositivo);
-    }
-
-    @GetMapping("/estadodisp/{idEstado}")
-    public ResponseEntity<EstadoDispositivo> getEstadoDispositivo(@PathVariable int idEstado) {
-        EstadoDispositivo estadoDispositivo = estadoDispositivosRepository.findById(idEstado)
-                .orElseThrow();
-        
-        return new ResponseEntity<>(estadoDispositivo, HttpStatus.OK);
-    }
-
-    @PutMapping("/estadodisp/{idEstado}")
-    public ResponseEntity<EstadoDispositivo> updateEstadoDispositivo(@PathVariable int idEstado, @RequestBody EstadoDispositivo estadoDispositivoDetails) {
-        EstadoDispositivo estadoDispositivo = estadoDispositivosRepository.findById(idEstado)
-                .orElseThrow();
-        return new ResponseEntity<>(estadoDispositivosRepository.save(estadoDispositivo), HttpStatus.OK);
     }
 
 }

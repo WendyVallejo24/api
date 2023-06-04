@@ -22,14 +22,30 @@ public class EstadoHabitacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_estado_hab")
-    private int idEstado;
-    
-    @Column(name = "estado_hab")
-    private String estadoHab;
+    private Integer id;
 
-    @OneToOne(mappedBy = "estadoHab")
+    @Column(name = "estado_hab")
+    private String estado;
+
+    @OneToOne(mappedBy = "estadoHabitacion")
     private Habitaciones habitacion;
-    
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public Habitaciones getHabitacion() {
         return habitacion;
     }
@@ -37,21 +53,5 @@ public class EstadoHabitacion {
     public void setHabitacion(Habitaciones habitacion) {
         this.habitacion = habitacion;
     }
-
-    public int getIdEstado() {
-        return idEstado;
-    }
-
-    public void setIdEstado(int idEstado) {
-        this.idEstado = idEstado;
-    }
-
-    public String getEstadoHab() {
-        return estadoHab;
-    }
-
-    public void setEstadoHab(String estadoHab) {
-        this.estadoHab = estadoHab;
-    }  
     
 }

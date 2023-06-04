@@ -5,14 +5,12 @@
 
 package org.uv.proyecto.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,32 +24,29 @@ public class EstadoDispositivo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_estado_dis")
-    private int idEstado;
-    
-    @Column(name = "estado_dis")
-    private int estadoDis;
+    private Integer id;
 
-    public int getEstadoDis() {
-        return estadoDis;
-    }
-    
-    @OneToOne(mappedBy="estadoDis")
+    @Column(name = "estado_dis")
+    private Boolean estado;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "estadoDispositivo")
     private Dispositivos dispositivo;
 
-    public int getIdEstado() {
-        return idEstado;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdEstado(int idEstado) {
-        this.idEstado = idEstado;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int isEstadoDis() {
-        return estadoDis;
+    public Boolean getEstado() {
+        return estado;
     }
 
-    public void setEstadoDis(int estadoDis) {
-        this.estadoDis = estadoDis;
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
     public Dispositivos getDispositivo() {
@@ -61,5 +56,4 @@ public class EstadoDispositivo {
     public void setDispositivo(Dispositivos dispositivo) {
         this.dispositivo = dispositivo;
     }
-    
 }

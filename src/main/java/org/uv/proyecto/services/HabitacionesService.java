@@ -38,17 +38,7 @@ public class HabitacionesService {
         return habitacionesRepository.findAll();
     }
 
-    public Habitaciones updateHabitacion(int nHabitacion, Habitaciones habitacionDetails) {
-        Habitaciones habitacion = habitacionesRepository.findById(nHabitacion).orElse(null);
-        if (habitacion != null) {
-            habitacion.setDispositivo(habitacionDetails.getDispositivo());
-            habitacion.setEstadoHab(habitacionDetails.getEstadoHab());
-            // Actualiza los demás campos según sea necesario
 
-            return habitacionesRepository.save(habitacion);
-        }
-        return null;
-    }
 
     public void deleteHabitacion(int nHabitacion) {
         habitacionesRepository.deleteById(nHabitacion);

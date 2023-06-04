@@ -31,16 +31,7 @@ public class EstadoDisService {
         return estadoDispositivoRepository.save(estadoDispositivo);
     }
 
-    public EstadoDispositivo updateEstadoDispositivo(int id, EstadoDispositivo updatedEstadoDispositivo) {
-        EstadoDispositivo existingEstadoDispositivo = estadoDispositivoRepository.findById(id).orElse(null);
-        if (existingEstadoDispositivo != null) {
-            // Actualizar los campos necesarios de acuerdo a tus requerimientos
-            existingEstadoDispositivo.setEstadoDis(updatedEstadoDispositivo.isEstadoDis());
-            return estadoDispositivoRepository.save(existingEstadoDispositivo);
-        } else {
-            return null;
-        }
-    }
+
 
     public boolean deleteEstadoDispositivo(int id) {
         EstadoDispositivo estadoDispositivo = estadoDispositivoRepository.findById(id).orElse(null);

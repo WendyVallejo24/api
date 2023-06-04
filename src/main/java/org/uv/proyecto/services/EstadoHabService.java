@@ -36,16 +36,7 @@ public class EstadoHabService {
         return estadoHabitacionRepository.findAll();
     }
 
-    public EstadoHabitacion updateEstadoHabitacion(int idEstado, EstadoHabitacion estadoHabitacionDetails) {
-        EstadoHabitacion estadoHabitacion = estadoHabitacionRepository.findById(idEstado).orElse(null);
-        if (estadoHabitacion != null) {
-            estadoHabitacion.setEstadoHab(estadoHabitacionDetails.getEstadoHab());
-            // Actualiza los demás campos según sea necesario
 
-            return estadoHabitacionRepository.save(estadoHabitacion);
-        }
-        return null;
-    }
 
     public void deleteEstadoHabitacion(int idEstado) {
         estadoHabitacionRepository.deleteById(idEstado);
