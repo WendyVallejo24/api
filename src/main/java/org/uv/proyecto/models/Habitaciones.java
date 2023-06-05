@@ -4,16 +4,18 @@
  */
 package org.uv.proyecto.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
+import javax.persistence.CascadeType;
 
 
 @Entity
@@ -22,41 +24,39 @@ public class Habitaciones {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "n_habitacion")
-    private int nHabitacion;
-
-    public int getnHabitacion() {
-        return nHabitacion;
-    }
-
-    public void setnHabitacion(int nHabitacion) {
-        this.nHabitacion = nHabitacion;
-    }
+    private Integer numero;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ip_dispositivo", nullable = false)
-    private Dispositivos dispositivo;
-    
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_estado_hab", nullable = false)
-    private EstadoHabitacion estadoHab;
+    @Column(name = "estado_hab")
+    private int estado_hab; 
 
+    @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
+    private Set<Dispositivos> dispositivos= new HashSet<>();;
 
-
-    public Dispositivos getDispositivo() {
-        return dispositivo;
+    public Integer getNumero() {
+        return numero;
     }
 
-    public void setDispositivo(Dispositivos dispositivo) {
-        this.dispositivo = dispositivo;
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
 
-    public EstadoHabitacion getEstadoHab() {
-        return estadoHab;
+    public int getEstado_hab() {
+        return estado_hab;
     }
 
-    public void setEstadoHab(EstadoHabitacion estadoHab) {
-        this.estadoHab = estadoHab;
+    public void setEstado_hab(int estado_hab) {
+        this.estado_hab = estado_hab;
     }
-    
-    
+
+    public Set<Dispositivos> getDispositivos() {
+        return dispositivos;
+    }
+
+    public void setDispositivos(Set<Dispositivos> dispositivos) {
+        this.dispositivos = dispositivos;
+        
+        for(Dispositivos dispositivo: dispositivos){
+            dispositivo.setHabitacion(this);
+        }
+    }
 }

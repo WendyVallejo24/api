@@ -1,74 +1,68 @@
 package org.uv.proyecto.models;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
 @Table(name = "dispositivos")
 public class Dispositivos {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ip_dispositivo")
-    private String ipDispositivo;
-    
+    private String ip;
+
     @Column(name = "tipo_dis")
-    private String tipoDis;
-    
-    @Column(name = "hora")
-    private Time hora;
-    
-    
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_estado_dis")
-    private EstadoDispositivo estadoDis;
-    
-    
-    @OneToMany(mappedBy = "dispositivo")
-    private List<Habitaciones> habitacion = new ArrayList<>();
+    private String tipo;
 
-    public String getIpDispositivo() {
-        return ipDispositivo;
-    }
-    public void setIpDispositivo(String ipDispositivo) {
-        this.ipDispositivo = ipDispositivo;
-    }
-    public String getTipoDis() {
-        return tipoDis;
-    }
-    public void setTipoDis(String tipoDis) {
-        this.tipoDis = tipoDis;
-    }
-    public Time getHora() {
-        return hora;
-    }
-    public void setHora(Time hora) {
-        this.hora = hora;
-    }
-    public EstadoDispositivo getEstadoDis() {
-        return estadoDis;
-    }
-    public void setEstadoDis(EstadoDispositivo estadoDis) {
-        this.estadoDis = estadoDis;
+    @Column(name = "estado_dis")
+    private int estadoDispositivo;
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "n_habitacion")
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private Habitaciones habitacion;
+
+    public String getIp() {
+        return ip;
     }
 
-    public List<Habitaciones> getHabitacion() {
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public int getEstadoDispositivo() {
+        return estadoDispositivo;
+    }
+
+    public void setEstadoDispositivo(int estadoDispositivo) {
+        this.estadoDispositivo = estadoDispositivo;
+    }
+
+    public Habitaciones getHabitacion() {
         return habitacion;
     }
-    public void setHabitacion(List<Habitaciones> habitacion) {
+
+    public void setHabitacion(Habitaciones habitacion) {
         this.habitacion = habitacion;
     }
+       
 }

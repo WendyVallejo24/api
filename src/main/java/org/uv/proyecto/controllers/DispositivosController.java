@@ -4,11 +4,14 @@
  */
 package org.uv.proyecto.controllers;
 
-import java.util.List;
+import java.net.URI;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,79 +19,71 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.uv.proyecto.models.Dispositivos;
-import org.uv.proyecto.models.EstadoDispositivo;
+import org.uv.proyecto.models.Habitaciones;
 import org.uv.proyecto.repository.DispositivosRepository;
-import org.uv.proyecto.repository.EstadoDisRepository;
-import org.uv.proyecto.services.DispositivosService;
+import org.uv.proyecto.repository.HabitacionesRepository;
 
 /**
  *
  * @author wbpat
  */
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/dispositivo")
 public class DispositivosController {
+    @Autowired
+    private DispositivosRepository dispositivoRepository;
     
     @Autowired
-    private EstadoDisRepository estadoDisRepository;
-    @Autowired
-    private DispositivosRepository dispositivosRepository;
-
-    @Autowired
-    private DispositivosService dispositivosService;
-
-    // Obtener todos los dispositivos
-    @GetMapping("/dispositivos")
-    public List<Dispositivos> getAllDispositivos() {
-        return dispositivosService.getAllDispositivos();
-    }
-
-    // Obtener un dispositivo por su ID
-    @GetMapping("/{ip_dispositivo}")
-    public ResponseEntity<Dispositivos> getDispositivoById(@PathVariable("id") String id) {
-        Dispositivos dispositivo = dispositivosService.getDispositivoById(id);
-        if (dispositivo != null) {
-            return ResponseEntity.ok(dispositivo);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    // Crear un nuevo dispositivo
-    /*@PostMapping("/dispositivos")
-    public Dispositivos createDispositivo(@RequestBody Dispositivos dispositivo) {
-        return dispositivosService.createDispositivo(dispositivo);
-    }*/
+    private HabitacionesRepository habitacionRepository;
     
-    @PostMapping("/dispositivos/{idEstado}/estado")
-    public ResponseEntity<Dispositivos> createDispositivos(@PathVariable(value="idEstado") Integer idEstado, @RequestBody Dispositivos dispositivoDetails){
-        EstadoDispositivo eDispositivo = estadoDisRepository.findById(idEstado).orElseThrow();
-        dispositivoDetails.setEstadoDis(eDispositivo);
+    @GetMapping
+    public ResponseEntity<Page <Dispositivos> > listarDispositivos(Pageable pageable){
+        return ResponseEntity.ok(dispositivoRepository.findAll(pageable));
+    }
+    
+    @PostMapping
+    public ResponseEntity<Dispositivos> guardarDispositivo(@RequestBody Dispositivos dispositivo){
+        System.out.println(dispositivo.getIp());
+        Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(dispositivo.getHabitacion().getNumero());
         
-        return new ResponseEntity<>(dispositivoDetails, HttpStatus.CREATED);
-    }
-
-    // Actualizar un dispositivo existente
-    @PutMapping("/{ip_dispositivo}")
-    public ResponseEntity<Dispositivos> updateDispositivo(@PathVariable("id") String id, @RequestBody Dispositivos dispositivo) {
-        Dispositivos updatedDispositivo = dispositivosService.updateDispositivo(id, dispositivo);
-        if (updatedDispositivo != null) {
-            return ResponseEntity.ok(updatedDispositivo);
-        } else {
-            return ResponseEntity.notFound().build();
+        if(!habitacionOptional.isPresent()){
+            return ResponseEntity.unprocessableEntity().build();
         }
+        dispositivo.setHabitacion(habitacionOptional.get());
+        Dispositivos dispositivoGuardado = dispositivoRepository.save(dispositivo);
+        URI ubicacion = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dispositivoGuardado.getIp()).toUri();
+        return ResponseEntity.created(ubicacion).body(dispositivoGuardado);
     }
-
-    // Eliminar un dispositivo
-    @DeleteMapping("/{ip_dispositivo}")
-    public ResponseEntity<Void> deleteDispositivo(@PathVariable("id") String id) {
-        boolean deleted = dispositivosService.deleteDispositivo(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+    
+    @PutMapping("{ip_dispositivo}")
+    public ResponseEntity<Dispositivos> ActualizarDispositivo(@RequestBody Dispositivos dispositivo, @PathVariable String ip_dispositivo){
+        Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(dispositivo.getHabitacion().getNumero());
+        
+        if(!habitacionOptional.isPresent()){
+            return ResponseEntity.unprocessableEntity().build();
         }
+        
+        Optional<Dispositivos> dispositivoOptional = dispositivoRepository.findById(ip_dispositivo);
+        if (!dispositivoOptional.isPresent()){
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        
+        dispositivo.setHabitacion(habitacionOptional.get());
+        dispositivo.setIp(dispositivoOptional.get().getIp());
+        dispositivoRepository.save(dispositivo);
+        return ResponseEntity.noContent().build();
     }
-
+    
+    @GetMapping("/{ip_dispositivo}")
+    public ResponseEntity<Dispositivos> obtenerDispositivoPorIp (@PathVariable String ip_dispositivo){
+        Optional<Dispositivos> dispositivoOptional = dispositivoRepository.findById(ip_dispositivo);
+        if (!dispositivoOptional.isPresent()){
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        return ResponseEntity.ok(dispositivoOptional.get());
+    }
 }

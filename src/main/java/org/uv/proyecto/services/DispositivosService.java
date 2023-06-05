@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.uv.proyecto.models.Dispositivos;
 import org.uv.proyecto.repository.DispositivosRepository;
-import org.uv.proyecto.repository.EstadoDisRepository;
 
 /**
  *
@@ -20,8 +19,7 @@ public class DispositivosService {
     @Autowired
     private DispositivosRepository dispositivosRepository;
     
-    @Autowired
-    private EstadoDisRepository estadoDispositivoRepository;
+
 
     public List<Dispositivos> getAllDispositivos() {
         return dispositivosRepository.findAll();
@@ -35,7 +33,7 @@ public class DispositivosService {
         return dispositivosRepository.save(dispositivo);
     }
 
-    public Dispositivos updateDispositivo(String id, Dispositivos updatedDispositivo) {
+    /*public Dispositivos updateDispositivo(String id, Dispositivos updatedDispositivo) {
         Dispositivos existingDispositivo = dispositivosRepository.findById(id).orElse(null);
         if (existingDispositivo != null) {
             // Actualizar los campos necesarios de acuerdo a tus requerimientos
@@ -46,7 +44,7 @@ public class DispositivosService {
         } else {
             return null;
         }
-    }
+    }*/
 
     public boolean deleteDispositivo(String id) {
         Dispositivos dispositivo = dispositivosRepository.findById(id).orElse(null);
