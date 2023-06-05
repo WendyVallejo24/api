@@ -4,16 +4,18 @@
  */
 package org.uv.proyecto.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
+import javax.persistence.CascadeType;
 
 
 @Entity
@@ -23,13 +25,12 @@ public class Habitaciones {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "n_habitacion")
     private Integer numero;
+    
+    @Column(name = "estado_hab")
+    private int estado_hab; 
 
-    @OneToMany(mappedBy = "habitacion")
-    private List<Dispositivos> dispositivos;
-
-    @OneToOne
-    @JoinColumn(name = "id_estado_hab")
-    private EstadoHabitacion estadoHabitacion;  
+    @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
+    private Set<Dispositivos> dispositivos= new HashSet<>();;
 
     public Integer getNumero() {
         return numero;
@@ -39,21 +40,23 @@ public class Habitaciones {
         this.numero = numero;
     }
 
-    public List<Dispositivos> getDispositivos() {
+    public int getEstado_hab() {
+        return estado_hab;
+    }
+
+    public void setEstado_hab(int estado_hab) {
+        this.estado_hab = estado_hab;
+    }
+
+    public Set<Dispositivos> getDispositivos() {
         return dispositivos;
     }
 
-    public void setDispositivos(List<Dispositivos> dispositivos) {
+    public void setDispositivos(Set<Dispositivos> dispositivos) {
         this.dispositivos = dispositivos;
+        
+        for(Dispositivos dispositivo: dispositivos){
+            dispositivo.setHabitacion(this);
+        }
     }
-
-    public EstadoHabitacion getEstadoHabitacion() {
-        return estadoHabitacion;
-    }
-
-    public void setEstadoHabitacion(EstadoHabitacion estadoHabitacion) {
-        this.estadoHabitacion = estadoHabitacion;
-    }
-    
-    
 }

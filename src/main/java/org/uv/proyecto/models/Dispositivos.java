@@ -2,11 +2,17 @@ package org.uv.proyecto.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
@@ -19,12 +25,12 @@ public class Dispositivos {
     @Column(name = "tipo_dis")
     private String tipo;
 
-    @OneToOne
-    @JoinColumn(name = "id_estado_dis")
-    private EstadoDispositivo estadoDispositivo;
-
-    @ManyToOne
+    @Column(name = "estado_dis")
+    private int estadoDispositivo;
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "n_habitacion")
+    @JsonProperty(access = Access.WRITE_ONLY)
     private Habitaciones habitacion;
 
     public String getIp() {
@@ -43,11 +49,11 @@ public class Dispositivos {
         this.tipo = tipo;
     }
 
-    public EstadoDispositivo getEstadoDispositivo() {
+    public int getEstadoDispositivo() {
         return estadoDispositivo;
     }
 
-    public void setEstadoDispositivo(EstadoDispositivo estadoDispositivo) {
+    public void setEstadoDispositivo(int estadoDispositivo) {
         this.estadoDispositivo = estadoDispositivo;
     }
 
@@ -58,6 +64,5 @@ public class Dispositivos {
     public void setHabitacion(Habitaciones habitacion) {
         this.habitacion = habitacion;
     }
-    
-    
+       
 }
