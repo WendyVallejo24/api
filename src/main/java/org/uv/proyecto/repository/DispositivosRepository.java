@@ -4,9 +4,11 @@
  */
 package org.uv.proyecto.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.uv.proyecto.models.Dispositivos;
+import org.uv.proyecto.models.Habitaciones;
 
 /**
  *
@@ -14,5 +16,7 @@ import org.uv.proyecto.models.Dispositivos;
  */
 @Repository
 public interface DispositivosRepository extends JpaRepository<Dispositivos, String> {
+
+    public List<Dispositivos> findByHabitacion(Habitaciones habitacion);
     
 }
