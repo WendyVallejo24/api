@@ -31,6 +31,7 @@ import org.uv.proyecto.repository.HabitacionesRepository;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/habitacion")
+@CrossOrigin(origins = "http://localhost:4200")
 public class HabitacionesController {
 
     @Autowired

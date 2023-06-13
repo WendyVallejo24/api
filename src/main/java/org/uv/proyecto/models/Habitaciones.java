@@ -30,7 +30,7 @@ public class Habitaciones {
     private int estado_hab; 
 
     @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
-    private Set<Dispositivos> dispositivos= new HashSet<>();;
+    private Set<Dispositivos> dispositivos= new HashSet<>();
 
     public Integer getNumero() {
         return numero;
