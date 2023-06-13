@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
 import javax.persistence.CascadeType;
 
 
@@ -30,7 +29,7 @@ public class Habitaciones {
     private int estado_hab; 
 
     @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
-    private Set<Dispositivos> dispositivos= new HashSet<>();
+    private Set<Dispositivos> dispositivos= new HashSet<>();;
 
     public Integer getNumero() {
         return numero;
