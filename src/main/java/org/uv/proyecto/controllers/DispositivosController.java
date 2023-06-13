@@ -29,6 +29,7 @@ import org.uv.proyecto.repository.HabitacionesRepository;
  *
  * @author wbpat
  */
+
 @RestController
 @RequestMapping("/dispositivo")
 @CrossOrigin(origins = "http://localhost:4200")
