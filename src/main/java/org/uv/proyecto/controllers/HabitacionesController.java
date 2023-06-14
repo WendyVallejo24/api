@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package org.uv.proyecto.controllers;
+
 import java.net.URI;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.uv.proyecto.models.Dispositivos;
 import org.uv.proyecto.models.Habitaciones;
 import org.uv.proyecto.repository.HabitacionesRepository;
+import java.util.Set;
+import java.util.List;
+import org.uv.proyecto.repository.DispositivosRepository;
 
 /**
  *
@@ -36,8 +41,11 @@ public class HabitacionesController {
     @Autowired
     private HabitacionesRepository habitacionRepository;
     
+    @Autowired
+    private DispositivosRepository dispositivoRepository;
+
     @GetMapping
-    public ResponseEntity<Page <Habitaciones> > listarHabitaciones(Pageable pageable){
+    public ResponseEntity<Page<Habitaciones>> listarHabitaciones(Pageable pageable) {
         return ResponseEntity.ok(habitacionRepository.findAll(pageable));
     }
 
@@ -58,35 +66,58 @@ public class HabitacionesController {
                 .buildAndExpand(createdHabitacion.getNumero()).toUri();
         return ResponseEntity.created(ubicacion).body(createdHabitacion);
     }
-    
+
     @PutMapping("/{numero}")
-    public ResponseEntity<Habitaciones> actualizarAbitación(@PathVariable Integer numero, @RequestBody Habitaciones habitacion){
+    public ResponseEntity<Habitaciones> actualizarAbitación(@PathVariable Integer numero, @RequestBody Habitaciones habitacion) {
         Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(numero);
-        if(!habitacionOptional.isPresent()){
+        if (!habitacionOptional.isPresent()) {
             return ResponseEntity.unprocessableEntity().build();
         }
         habitacion.setNumero(habitacionOptional.get().getNumero());
         habitacionRepository.save(habitacion);
         return ResponseEntity.noContent().build();
     }
-    
+
     @DeleteMapping("/{numero}")
-    public ResponseEntity<Habitaciones> eliminarHabitacion (@PathVariable Integer numero){
+    public ResponseEntity<Habitaciones> eliminarHabitacion(@PathVariable Integer numero) {
         Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(numero);
-        if(!habitacionOptional.isPresent()){
+        if (!habitacionOptional.isPresent()) {
             return ResponseEntity.unprocessableEntity().build();
         }
-        
+
         habitacionRepository.delete(habitacionOptional.get());
         return ResponseEntity.noContent().build();
     }
-    
+
     @GetMapping("numero")
-    public ResponseEntity<Habitaciones> obtenerHabitacionPorId(@PathVariable Integer numero){
+    public ResponseEntity<Habitaciones> obtenerHabitacionPorId(@PathVariable Integer numero) {
         Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(numero);
-        if(!habitacionOptional.isPresent()){
+        if (!habitacionOptional.isPresent()) {
             return ResponseEntity.unprocessableEntity().build();
         }
         return ResponseEntity.ok(habitacionOptional.get());
+    }
+
+    /*@GetMapping("/{numero}/dispositivo")
+    public ResponseEntity<Set<Dispositivos>> obtenerDispositivosDeHabitacion(@PathVariable Integer numero) {
+        Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(numero);
+        if (habitacionOptional.isPresent()) {
+            Habitaciones habitacion = habitacionOptional.get();
+            Set<Dispositivos> dispositivos = habitacion.getDispositivos();
+            return ResponseEntity.ok(dispositivos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }*/
+
+    @GetMapping("/{numero}/dispositivo")
+    public ResponseEntity<List<Dispositivos>> obtenerDispositivosDeHabitacionOrdenados(@PathVariable Integer numero) {
+        Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(numero);
+        if (habitacionOptional.isPresent()) {
+            List<Dispositivos> dispositivosOrdenados = dispositivoRepository.obtenerDispositivosPorHabitacionOrdenadosPorTipo(numero);
+            return ResponseEntity.ok(dispositivosOrdenados);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
