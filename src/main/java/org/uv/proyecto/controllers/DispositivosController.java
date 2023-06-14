@@ -88,5 +88,24 @@ public class DispositivosController {
         }
         return ResponseEntity.ok(dispositivoOptional.get());
     }
+    
+    
+    @PutMapping("/actualizar")
+    public ResponseEntity<Dispositivos> actualizarDispositivo(@RequestBody Dispositivos dispositivo) {
+        Optional<Habitaciones> habitacionOptional = habitacionRepository.findById(dispositivo.getHabitacion().getNumero());
+        if (!habitacionOptional.isPresent()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        
+        Optional<Dispositivos> dispositivoOptional = dispositivoRepository.findById(dispositivo.getIp());
+        if (!dispositivoOptional.isPresent()) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        
+        dispositivo.setHabitacion(habitacionOptional.get());
+        dispositivo.setIp(dispositivoOptional.get().getIp());
+        dispositivoRepository.save(dispositivo);
+        return ResponseEntity.noContent().build();
+    }
 
 }

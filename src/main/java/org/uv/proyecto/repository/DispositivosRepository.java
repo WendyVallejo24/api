@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.uv.proyecto.models.Dispositivos;
 import org.uv.proyecto.models.Habitaciones;
-
+import org.springframework.data.jpa.repository.Query;
 /**
  *
  * @author wbpat
@@ -18,5 +18,9 @@ import org.uv.proyecto.models.Habitaciones;
 public interface DispositivosRepository extends JpaRepository<Dispositivos, String> {
 
     public List<Dispositivos> findByHabitacion(Habitaciones habitacion);
+    
+    @Query("SELECT d FROM Dispositivos d WHERE d.habitacion.numero = :numeroHabitacion ORDER BY d.tipo ASC")
+    List<Dispositivos> obtenerDispositivosPorHabitacionOrdenadosPorTipo(Integer numeroHabitacion);
+
     
 }
