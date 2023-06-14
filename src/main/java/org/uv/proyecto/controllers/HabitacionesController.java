@@ -6,12 +6,12 @@ package org.uv.proyecto.controllers;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +43,7 @@ public class HabitacionesController {
     
     @Autowired
     private DispositivosRepository dispositivoRepository;
+
 
     @GetMapping
     public ResponseEntity<Page<Habitaciones>> listarHabitaciones(Pageable pageable) {
@@ -97,6 +98,7 @@ public class HabitacionesController {
         }
         return ResponseEntity.ok(habitacionOptional.get());
     }
+
 
     /*@GetMapping("/{numero}/dispositivo")
     public ResponseEntity<Set<Dispositivos>> obtenerDispositivosDeHabitacion(@PathVariable Integer numero) {
